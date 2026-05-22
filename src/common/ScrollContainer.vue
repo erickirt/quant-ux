@@ -41,6 +41,7 @@ export default {
            * However the stupid simulator has a bug, so we have to trick a litte to make the native work
            */
           if (this.canDestroy) {
+
             if (this.domNode.parentNode) {
               this.domNode.parentNode.appendChild(node);
               var parent = this.domNode.parentNode;

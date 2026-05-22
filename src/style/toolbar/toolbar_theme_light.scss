@@ -89,4 +89,12 @@
             }
         }
     }
+
+    .MatchCanvasScrollHandle {
+        background: rgba(0,0,0,0.3);
+        &:hover {
+            background: rgba(0,0,0,0.4);
+        }
+    }
 }
+

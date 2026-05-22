@@ -70,8 +70,8 @@ export default {
     components: {},
     methods: {
 		initSize () {
-			let height = win.getBox().h
-			this.domNode.style.height = `${height}px`
+			//let height = win.getBox().h
+			this.domNode.style.height = 'calc(100vh - 48px)'//`${height}px`
 		},
 
     	initRender (){
