@@ -52,6 +52,7 @@ export default {
       this.colorPicker.placeAt(this.topLeft);
       this.own(this.colorPicker.on("change", lang.hitch(this, "onColorChange")));
       this.setValue(this.value);
+      this.selectHandle(0);
     },
 
     getValue () {

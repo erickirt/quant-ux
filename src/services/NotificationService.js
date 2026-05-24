@@ -30,6 +30,17 @@ class NotificationService extends AbstractService{
         this.user = user
     }
 
+    async getSeenNotifications () {
+        if ( this.user.id === -1) {
+            return []
+        }
+        const user = await this._get('/rest/user/' + this.user.id + '.json')
+        if (user.notifications) {
+            return Object.keys(user.notifications)
+        }
+        return []
+    }
+    
     async getNotications () {
         if ( this.user.id === -1) {
             return []
@@ -57,7 +68,7 @@ class NotificationService extends AbstractService{
         let maxAdd = getDaysSinceLastNotification(user) > 1 ? 1 : 0
         console.log('getDaysSinceLastNotification', getDaysSinceLastNotification(user))
         if (location.href.indexOf('localhost') > 0) {
-           // maxAdd = 1
+           //maxAdd = 0
         }
         this.logger.log(-1, 'addUserJourneyNotifications', `> days since last ${getDaysSinceLastNotification(user)} > maxAdd: ${maxAdd} > Seen notifications:`, user.notifications )
         this.rules.forEach(rule => {
@@ -158,15 +169,21 @@ class NotificationService extends AbstractService{
                         Whether you're wireframing your next big idea or diving into user behavior, 
                         Quant-UX helps you bring it all together in one seamless workflow.
                     </p>
-
+                    <p>
+                        If you like Quant-UX and you're part of the GitHub community, pleaese give us a star ⭐️
+                        <a href="https://github.com/KlausSchaefers/quant-ux" target="github">Quant-UX on GitHub</a> 
+                    </p>
+                    
                     <p>
                         To help you get started, check out our <a href="https://www.youtube.com/@quant-ux8332" target="github">YouTube</a> channel where we share tutorials, feature overviews, 
                         and pro tips to make the most of the platform.
                     </p>
+
                     <p>                                     
                         And if you’d like to connect with other designers, get support, or share your feedback, join our <a href="https://discord.gg/TQBpfAAKmU" target="github">Discord</a> 
                         community — we would love to have you there.
                     </p>
+
                     <p>     
                         Let's build better experiences together! 🚀
                     </p>
@@ -251,7 +268,7 @@ class NotificationService extends AbstractService{
                 id:"Youtube",
                 img: 'Youtube.png',
                 more: `
-                    hey there, do you know that we have a <a href="https://www.youtube.com/@quant-ux8332" target="github">YouTube</a>
+                    Hey there, do you know that we have a <a href="https://www.youtube.com/@quant-ux8332" target="github">YouTube</a>
                     channel?  Dive into a treasure trove of tutorials and sneak peeks that'll supercharge your learning journey.
                     If you like the content, subscribe to the channel to not miss out on new content.
                 `,
@@ -303,20 +320,20 @@ class NotificationService extends AbstractService{
                 `,
                 title: 'Work with others'
             },
-            {
-                matches (user) {
-                    return getDays(user) > 5
-                },
-                id:"Luisa",
-                img: 'Luisa.png',
-                more: `
-                    Quant-UX has a sister project, called <a href="https://luisa.cloud" target="luisa">Luisa</a>.
-                    With Luisa you can turn your prototypes into real apps, add your own data and logic.
-                    Check it out!
+            // {
+            //     matches (user) {
+            //         return getDays(user) > 5
+            //     },
+            //     id:"Luisa",
+            //     img: 'Luisa.png',
+            //     more: `
+            //         Quant-UX has a sister project, called <a href="https://luisa.cloud" target="luisa">Luisa</a>.
+            //         With Luisa you can turn your prototypes into real apps, add your own data and logic.
+            //         Check it out!
                    
-                `,
-                title: 'Turn prototypes into real apps'
-            },
+            //     `,
+            //     title: 'Turn prototypes into real apps'
+            // },
             {
                 matches (user) {
                     return getDays(user) > 6
@@ -346,6 +363,17 @@ class NotificationService extends AbstractService{
                     Check out the <a href="https://youtu.be/oKiw1bvdRvo" target="_youtube">Video</a>.
                 `,
                 title: 'Smarter Drag & Drop with Rectangle Paddings'
+            },
+            {
+                matches (user) {
+                    return getDays(user) > 2
+                },
+                id:"GradientColor",
+                img: 'GradientColor.png',
+                more: `
+                    You can now also create Labels with a color gradient! Simply select the Label, open the color picker, and choose the gradient option.
+                `,
+                title: 'Create Labels with Color Gradients'
             }
             
         ]

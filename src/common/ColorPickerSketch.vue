@@ -182,7 +182,7 @@ export default {
 			 * stay the same, although hue is moved. we fix this be overwriting
 			 * the h value
 			 */
-			if (this.lastHue){
+			if (this.lastHue != null){
 				hsv.h = this.lastHue;
 			}
 			this._touchMoveListner = on(win.body(),touch.move, lang.hitch(this,"onSatMove", hsv));
@@ -247,17 +247,16 @@ export default {
 			let percent = 0
 			if (left > 1) {
 				h = 360
+				percent = 100
 			} else {
 				percent = left * 100
 				h = (360 * percent / 100)
 			}
-			if (h != hsv.h){
-				this.huePointer.style.left = percent + '%'
-				this.satCntr.style.background = "hsl(" + (h) + ", 100%, 50%)";
-				var c = this.hsvToRgb(h, hsv.s, hsv.v, hsv.a);
-				this.setControls(c);
-				this.onChange();
-			}
+			this.huePointer.style.left = percent + '%'
+			this.satCntr.style.background = "hsl(" + (h) + ", 100%, 50%)";
+			var c = this.hsvToRgb(h, hsv.s, hsv.v, hsv.a);
+			this.setControls(c);
+			this.onChange();
 		},
 
 		onHueRelease (hsv, e){
@@ -265,20 +264,19 @@ export default {
 			let pos = this.getMousePos(e,this.hueCntr)
 			let left = pos.left
 			let h = 0;
-			let percent
+			let percent = 0
 			if (left > 1) {
 				h = 360
+				percent = 100
 			} else {
 				percent = left * 100
 				h = (360 * percent / 100)
 			}
-			if (h != hsv.h){
-				this.huePointer.style.left = percent + '%'
-				this.satCntr.style.background = "hsl(" + (h) + ", 100%, 50%)";
-				var c = this.hsvToRgb(h, hsv.s, hsv.v, hsv.a);
-				this.setControls(c);
-				this.onChange();
-			}
+			this.huePointer.style.left = percent + '%'
+			this.satCntr.style.background = "hsl(" + (h) + ", 100%, 50%)";
+			var c = this.hsvToRgb(h, hsv.s, hsv.v, hsv.a);
+			this.setControls(c);
+			this.onChange();
 			/**
 			 * Sometimes the hue value is not converted correctly when
 			 * the hue is changed as sat values are 0. E.g. #333 will
@@ -300,12 +298,13 @@ export default {
 		},
 
 		setHue (c){
-			var hsv = this.toHsv(c);
+			const hsv = this.toHsv(c);
 			this.huePointer.style.left = (hsv.h * 100/ 360) + '%'
+			this.lastHue = hsv.h;
 		},
 
 		setSaturation (c){
-			var hsv = this.toHsv(c);
+			const hsv = this.toHsv(c);
 			this.satCntr.style.background = "hsl(" + (hsv.h) + ", 100%, 50%)";
 			this.satPointer.style.top = (-(hsv.v * 100) + 1) + 100 + '%';
 			this.satPointer.style.left = hsv.s * 100 + '%'

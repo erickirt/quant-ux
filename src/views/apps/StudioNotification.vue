@@ -203,7 +203,7 @@ export default {
             return result
         },
         showAutoDialog () {
-            if (this.newNotifications && this.isAutoOpen) {  
+            if ((this.newNotifications && this.isAutoOpen) || this.seenNotifications.length === 0) {  
                 setTimeout(() => {
                     this.showDialog()
                 }, 500)
@@ -213,6 +213,7 @@ export default {
     async mounted() {
         this.notifcationService = Services.getNotificationService()
         this.notifications = await this.notifcationService.getNotications()
+        this.seenNotifications = await this.notifcationService.getSeenNotifications()
         this.isAutoOpen = await this.notifcationService.getAutoOpen()
         this.newNotifications = this.notifications.filter(n => n.isNew).length
         if (!this.newNotifications) {
